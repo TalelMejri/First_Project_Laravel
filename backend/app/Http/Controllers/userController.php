@@ -21,7 +21,7 @@ class userController extends Controller
     public function get_all(){
         $user=user_made::all();
         if(!$user){
-            return response()->json(["message"=>"user nor found"]);
+            return  response()->json(["message"=>"user nor found"]);
         }
         return response()->json(["data"=>$user],200);
     }
@@ -60,4 +60,5 @@ class userController extends Controller
         $user->delete();
         return  response()->json(["message"=>"User delete successfully"], 200);
     }
+
 }
