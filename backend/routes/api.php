@@ -24,4 +24,5 @@ Route::group(['prefix' => '/user_made'], function () {
     Route::post('/',[userController::class,'create']);
     Route::put('/{id}',[userController::class,'update']);
     Route::delete('/{id}',[userController::class,'destroy']);
+    Route::get('/findbyid/{id}',[userController::class,'find_by_id']);
 });

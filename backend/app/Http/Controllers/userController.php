@@ -26,6 +26,14 @@ class userController extends Controller
         return response()->json(["data"=>$user],200);
     }
 
+    public function find_by_id(int $id){
+        $user=user_made::find($id);
+        if(!$user){
+            return  response()->json(["message"=>"user nor found"]);
+        }
+        return response()->json(["data"=>$user],200);
+    }
+
 
     /*public function updateuser  (Request $request, int $id)
     {
@@ -42,13 +50,18 @@ class userController extends Controller
         if(!$user){
             return response()->json(["message"=>"user not found"],404);
         }else{
-            $user->update(
-                [
-                    "name"=>$request->input('name'),
-                    "email"=>$request->input('email'),
-                ],
-            );
-            return response()->json(["data"=>$user],200);
+            if(user_made::where("email",$request->email)->where("id","<>",$id)->count()>0){
+                return response()->json(["message"=>"Email already in use"], 400);
+            }
+            else{
+                $user->update(
+                    [
+                        "name"=>$request->input('name'),
+                        "email"=>$request->input('email'),
+                    ],
+                );
+                return response()->json(["data"=>$user],200);
+            }
         }
     }
 
