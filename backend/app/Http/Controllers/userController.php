@@ -39,7 +39,7 @@ class userController extends Controller
            if(!$user){
                 return response()->json(['message'=>'User Not Found'],400);
             }else{
-            return  response()->json(['data'=>$user], 200);
+                return  response()->json(['data'=>$user], 200);
             }
         //}
         /*$search=$request->get('champ_search');

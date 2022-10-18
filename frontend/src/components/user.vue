@@ -39,16 +39,19 @@
                 </tr>
               </tfoot>
                   <tbody v-if="users==''">
+                       
                     <tr class="table-primary" >
                       <td class="text-center py-4" colspan="7">
                               <p class="fw-bolder text-danger">No matching records found</p> 
                       </td>
                      </tr>
+                    
                 </tbody>
+            
                 <tbody v-else>
-                       <tr v-for="(user,index) in users" :key="user.id">
+                       <tr v-for="(user) in users" :key="user.id">
                         <td>
-                          {{index}}
+                          {{user.id}}
                         </td>   
                         <td>
                           {{user.name}}
@@ -77,7 +80,8 @@ export default {
       users:[],
       user:[],
       search:null,
-      $choix:''
+      $choix:'',
+      message:''
     }
   },
   created(){
@@ -88,9 +92,12 @@ export default {
   methods:{
     rechercher_email_nom(){
       axios.get('http://localhost:8000/api/user_made/search/'+this.search)
-           .then((response)=>{
-                this.users=response.data.data;
-            })
+             .then((response)=>{
+                 this.users=response.data.data;
+            }).catch((response)=>{
+              //  console.log(response.response.data.message);
+                this.message=response.response.data.message;
+            });
     },
     deleteuser(id){
       if(confirm("do you want delete this user")){
