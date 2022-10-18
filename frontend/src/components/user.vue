@@ -1,116 +1,186 @@
 <template>
   <div class="user">
-    <div class="container mt-5 ">
+    <div class="container mt-5">
       <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <div class="row">
-                  <div class="col-md-4">
-                    <span class="btn btn-outline-primary"><router-link to="/ajouteruser">Add User</router-link> </span> 
-
-                  </div>
-                  <div class="col-md-4">
-                    <h6 class="m-0 font-weight-bold text-primary text-center" >User List Data Table </h6>
-                  </div>
-                    <div class="col-md-3">
-                     <form @submit.prevent="rechercher_email_nom">
-                      <input type="search" class="form-control" placeholder="search" v-model="search">
-                      <button  class="btn btn-outline-success">Search</button>
-                    </form>
-                  </div>
-                </div>
-            
+        <div class="card-header py-3">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="btn btn-outline-primary"
+                ><router-link to="/ajouteruser">Add User</router-link>
+              </span>
             </div>
-          <div class="card-body">
-            
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>*</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>*</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th>operation</th>
-                </tr>
-              </tfoot>
-                  <tbody v-if="users==''">
-                       
-                    <tr class="table-primary" >
-                      <td class="text-center py-4" colspan="7">
-                              <p class="fw-bolder text-danger">No matching records found</p> 
-                      </td>
-                     </tr>
-                    
-                </tbody>
-            
-                <tbody v-else>
-                       <tr v-for="(user) in users" :key="user.id">
-                        <td>
-                          {{user.id}}
-                        </td>   
-                        <td>
-                          {{user.name}}
-                        </td>
-                         <td>
-                             {{user.email}}
-                        </td>
-                        <td><button class="btn btn-danger" @click="deleteuser(user.id)">Delete</button>
-                            <button  class="btn btn-warning"> <router-link :to="'/edituser/'+user.id">Edit</router-link> </button></td>
-                       </tr>
-                </tbody>
-             </table>
+            <div class="col-md-4">
+              <h6 class="m-0 font-weight-bold text-primary text-center">
+                User List Data Table
+              </h6>
+            </div>
+            <div class="col-md-3">
+              <form @submit.prevent="fetchData">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="search"
+                  v-model="search"
+                />
+                <button class="btn btn-outline-success">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th>*</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>*</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th>operation</th>
+              </tr>
+            </tfoot>
+            <tbody v-if="users == ''">
+              <tr class="table-primary">
+                <td class="text-center py-4" colspan="7">
+                  <p class="fw-bolder text-danger">No matching records found</p>
+                </td>
+              </tr>
+            </tbody>
+
+            <tbody v-else>
+              <tr v-for="user in users" :key="user.id">
+                <td>
+                  {{ user.id }}
+                </td>
+                <td>
+                  {{ user.name }}
+                </td>
+                <td>
+                  {{ user.email }}
+                </td>
+                <td>
+                  <button class="btn btn-danger" @click="deleteuser(user.id)">
+                    Delete
+                  </button>
+                  <button class="btn btn-warning">
+                    <router-link :to="'/edituser/' + user.id">Edit</router-link>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-inline">
+          <button
+            class="btn btn-primary m-2"
+            @click="changePage(pagination.current_page - 1)"
+            :disabled="!pagination.prev_page"
+          >
+            prev
+          </button>
+          <button
+            class="btn btn-primary m-2"
+            v-for="num in Math.ceil(
+              pagination.per_page ? pagination.total / pagination.per_page : 1
+            )"
+            @click="changePage(num)"
+            :disabled="num == pagination.current_page"
+            :key="num"
+          >
+            {{ num }}
+          </button>
+          <button
+            class="btn btn-primary m-2"
+            @click="changePage(pagination.current_page + 1)"
+            :disabled="!pagination.next_page"
+          >
+            next
+          </button>
         </div>
       </div>
     </div>
- </div>
-        
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  name: 'user',
-  data(){
-    return{
-      users:[],
-      user:[],
-      search:null,
-      $choix:'',
-      message:''
-    }
+  name: "user",
+  data() {
+    return {
+      users: [],
+      user: [],
+      laravelData: {},
+      search: null,
+      $choix: "",
+      message: "",
+      count: null,
+      count_user: null,
+      pagination: {
+        current_page: 1,
+        next_page: 0,
+        prev_page: 0,
+        total: 0,
+        per_page: 0,
+      },
+    };
   },
-  created(){
-      axios.get("http://localhost:8000/api/user_made").then((response)=>{
-          this.users=response.data.data;
-      })
+  created() {
+    this.fetchData();
   },
-  methods:{
-    rechercher_email_nom(){
-      axios.get('http://localhost:8000/api/user_made/search/'+this.search)
-             .then((response)=>{
-                 this.users=response.data.data;
-            }).catch((response)=>{
-              //  console.log(response.response.data.message);
-                this.message=response.response.data.message;
-            });
+  methods: {
+    changePage(page) {
+      this.pagination.current_page = page;
+      this.fetchData();
     },
-    deleteuser(id){
-      if(confirm("do you want delete this user")){
-      axios.delete("http://localhost:8000/api/user_made/"+id).then(()=>{
-        axios.get("http://localhost:8000/api/user_made").then((suspense)=>{
-          this.users=suspense.data.data;
-        })
-      });
-    }
+    fetchData() {
+      axios
+        .get(
+          `http://localhost:8000/api/user_made/a?${
+            this.search ? "search=" + this.search : ""
+          }&page=${this.pagination.current_page}`
+        )
+        .then((response) => {
+          this.users = response.data.data;
+          this.pagination.prev_page =
+            response.data.prev_page_url?.split("=")[1];
+          this.pagination.next_page =
+            response.data.next_page_url?.split("=")[1];
+          this.pagination.per_page = response.data.per_page;
+          this.pagination.total = response.data.total;
+        });
     },
-  }
-}
-
+    // rechercher_email_nom() {
+    //   axios
+    //     .get("http://localhost:8000/api/user_made/search/" + this.search)
+    //     .then((response) => {
+    //       this.users = response.data.data;
+    //     })
+    //     .catch((response) => {
+    //       this.message = response.response.data.message;
+    //     });
+    // },
+    deleteuser(id) {
+      if (confirm("do you want delete this user")) {
+        axios.delete("http://localhost:8000/api/user_made/" + id).then(() => {
+          axios.get("http://localhost:8000/api/user_made").then((suspense) => {
+            this.users = suspense.data.data;
+          });
+        });
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -122,17 +192,17 @@ export default {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-.popup_magasin{
+.popup_magasin {
   position: fixed;
   top: 50%;
   left: 50%;
   flex-direction: column;
   border-radius: 5%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background: #fff;
   width: 450px;
   height: 330px;

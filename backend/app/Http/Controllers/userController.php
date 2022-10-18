@@ -91,4 +91,13 @@ class userController extends Controller
         return  response()->json(["message"=>"User delete successfully"], 200);
     }
 
+    public function recover(Request $request){
+        if(isset($request->search)){
+            $user=user_made::where("name",'like','%'.$request->search.'%')->paginate(5);
+        }else{
+            $user=user_made::paginate(5);
+        }
+        return response()->json($user, 200);
+    }
+
 }
