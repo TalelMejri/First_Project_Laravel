@@ -40,18 +40,9 @@ export default {
           name: this.name,
           email: this.email,
         };
-        /* if(this.edit==true){
-        this.name='';
-        this.email='';
-        axios.put("http://localhost:8000/api/user_made/"+this.iduser,this.user).then(()=>{
-          axios.get("http://localhost:8000/api/user_made").then((suspense)=>{
-            this.users=suspense.data.data;
-          })
-        })
-      }else{*/
         axios
           .post("http://localhost:8000/api/user_made", this.user)
-          .then((suspense) => {
+          .then(() => {
             this.$router.push({name:"home"});
           });
           this.name = "";

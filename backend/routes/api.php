@@ -25,4 +25,5 @@ Route::group(['prefix' => '/user_made'], function () {
     Route::put('/{id}',[userController::class,'update']);
     Route::delete('/{id}',[userController::class,'destroy']);
     Route::get('/findbyid/{id}',[userController::class,'find_by_id']);
+    Route::get('/search/{champ_search}',[userController::class,'search']);
 });

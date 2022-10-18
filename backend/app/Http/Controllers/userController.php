@@ -34,6 +34,23 @@ class userController extends Controller
         return response()->json(["data"=>$user],200);
     }
 
+    public function search($search){
+        $user=user_made::where("name",'like','%'.$search.'%')->get();
+           if(!$user){
+                return response()->json(['message'=>'User Not Found'],400);
+            }else{
+            return  response()->json(['data'=>$user], 200);
+            }
+        //}
+        /*$search=$request->get('champ_search');
+        $user= user_made::where('name','%'.$search.'%')->get();
+        if(!$user){
+            return  response()->json(["message"=>"user nor found"],401);
+        }else{
+            return response()->json(["data"=>$user],200);
+        }*/
+
+    }
 
     /*public function updateuser  (Request $request, int $id)
     {

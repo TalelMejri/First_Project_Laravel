@@ -3,9 +3,25 @@
     <div class="container mt-5 ">
       <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary text-center" >User List Data Table </h6><span class="btn btn-outline-primary"><router-link to="/ajouteruser">Add User</router-link> </span> 
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="btn btn-outline-primary"><router-link to="/ajouteruser">Add User</router-link> </span> 
+
+                  </div>
+                  <div class="col-md-4">
+                    <h6 class="m-0 font-weight-bold text-primary text-center" >User List Data Table </h6>
+                  </div>
+                    <div class="col-md-3">
+                     <form @submit.prevent="rechercher_email_nom">
+                      <input type="search" class="form-control" placeholder="search" v-model="search">
+                      <button  class="btn btn-outline-success">Search</button>
+                    </form>
+                  </div>
+                </div>
+            
             </div>
           <div class="card-body">
+            
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
@@ -60,7 +76,8 @@ export default {
     return{
       users:[],
       user:[],
-
+      search:null,
+      $choix:''
     }
   },
   created(){
@@ -69,6 +86,12 @@ export default {
       })
   },
   methods:{
+    rechercher_email_nom(){
+      axios.get('http://localhost:8000/api/user_made/search/'+this.search)
+           .then((response)=>{
+                this.users=response.data.data;
+            })
+    },
     deleteuser(id){
       if(confirm("do you want delete this user")){
       axios.delete("http://localhost:8000/api/user_made/"+id).then(()=>{
