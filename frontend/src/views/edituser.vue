@@ -49,11 +49,12 @@ export default{
                 email:this.email
             }
             axios.put('http://localhost:8000/api/user_made/'+this.id,this.user)
-            .then((suspence)=>{
+            .then(()=>{
                 this.$router.push({name:"home"});
             })
             .catch((res)=>{
-                this.message=res.response.data.message;
+                  this.message=res.response.data.message;
+                //this.message=res.response.data.message;
             });
         }
     }
