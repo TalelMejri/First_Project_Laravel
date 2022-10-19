@@ -9,7 +9,7 @@
 </template>
 
 <style lang="scss">
-
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

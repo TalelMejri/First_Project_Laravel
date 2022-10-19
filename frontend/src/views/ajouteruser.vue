@@ -73,8 +73,8 @@ export default {
           }).catch((res)=>{
               this.show_error = true;
               this.show_error_field='';
-              this.name_error=res.response.data.data.name[0];
-              this.email_error=res.response.data.data.email[0];
+              this.name_error=res.response.data.data.name[0] ? res.response.data.data.name[0] : '' ;
+              this.email_error=res.response.data.data.email[0] ? res.response.data.data.email[0] : '';
           });
       }
     },

@@ -6,7 +6,7 @@
           <div class="row">
             <div class="col-md-4">
               <span class="btn btn-outline-primary"
-                ><router-link to="/ajouteruser">Add User</router-link>
+                ><router-link to="/ajouteruser"><i  class="material-icons mx-2 text-dark">add</i></router-link>
               </span>
             </div>
             <div class="col-md-4">
@@ -22,7 +22,7 @@
                   placeholder="search"
                   v-model="search"
                 />
-                <button class="btn btn-outline-success">Search</button>
+                <button class="btn btn-outline-success">  <i  class="material-icons mx-2 text-dark">search</i></button>
               </form>
             </div>
           </div>
@@ -76,10 +76,12 @@
                 </td>
                 <td>
                   <button class="btn btn-danger" @click="deleteuser(user.id)">
-                    Delete
+                    <i  class="material-icons mx-2 text-dark me-2">delete</i>
                   </button>
                   <button class="btn btn-warning">
-                    <router-link :to="'/edituser/' + user.id">Edit</router-link>
+                    <router-link :to="'/edituser/' + user.id">
+                      <i  class="material-icons mx-2 text-dark">edit</i>
+                    </router-link>
                   </button>
                 </td>
               </tr>
