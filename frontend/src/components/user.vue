@@ -39,6 +39,8 @@
                 <th>*</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Date</th>
+                <th>operation</th>
               </tr>
             </thead>
             <tfoot>
@@ -46,6 +48,7 @@
                 <th>*</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Date</th>
                 <th>operation</th>
               </tr>
             </tfoot>
@@ -67,6 +70,9 @@
                 </td>
                 <td>
                   {{ user.email }}
+                </td>
+                <td>
+                  {{ user.date_naissance }}
                 </td>
                 <td>
                   <button class="btn btn-danger" @click="deleteuser(user.id)">
@@ -152,6 +158,7 @@ export default {
         )
         .then((response) => {
           this.users = response.data.data;
+          console.log(response);
           this.pagination.prev_page =
             response.data.prev_page_url?.split("=")[1];
           this.pagination.next_page =

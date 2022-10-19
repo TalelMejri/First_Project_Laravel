@@ -11,5 +11,6 @@ class user_made extends Model
     protected $fillable=[
         'name',
         'email',
+        'date_naissance'
     ];
 }

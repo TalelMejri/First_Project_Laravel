@@ -13,6 +13,7 @@ class userController extends Controller
             [
                 "name"=>$request->input("name"),
                 "email"=>$request->input("email"),
+                "date_naissance"=>$request->input("date"),
             ]
         );
         return  response()->json(["data"=>$user],200);

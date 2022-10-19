@@ -10,6 +10,8 @@
               <input type="text" class="form-control" v-model="name" />
               <label>email :</label>
               <input type="email" class="form-control" v-model="email" />
+              <label>date :</label>
+              <input type="date" class="form-control" v-model="date" />
               <button  class="btn btn-outline-warning mt-2">
                 Edit
               </button>
@@ -26,6 +28,7 @@ export default{
         return{
             name:'',
             email:'',
+            date:'',
             id:'',
             message:''
         }
@@ -35,12 +38,14 @@ export default{
         axios.get('http://localhost:8000/api/user_made/findbyid/'+this.id).then((suspence)=>{
           this.name=suspence.data.data.name;
           this.email=suspence.data.data.email;
+          this.date=suspence.data.data.date_naissance;
         })
     },
     methods:{
         edit(){
             this.user={
                 name:this.name,
+                date:this.date,
                 email:this.email
             }
             axios.put('http://localhost:8000/api/user_made/'+this.id,this.user)

@@ -10,6 +10,8 @@
             <input type="text" class="form-control" v-model="name" />
             <label>email :</label>
             <input type="email" class="form-control" v-model="email" />
+            <label>Date :</label>
+            <input type="date" class="form-control" v-model="date" />
             <button  class="btn btn-outline-dark mt-2">
               Add
             </button>
@@ -28,25 +30,30 @@ export default {
       show_error: false,
       name: "",
       email: "",
+      date:"",
       user: [],
     };
   },
   methods: {
     Onsubmit() {
-      if (this.name == "" || this.email == "") {
+      if (this.name == "" || this.email == "" || this.date == "" ) {
         this.show_error = true;
       } else {
         this.user = {
           name: this.name,
           email: this.email,
+          date:this.date
         };
+       
         axios
           .post("http://localhost:8000/api/user_made", this.user)
           .then(() => {
+           // console.log("here");
             this.$router.push({name:"home"});
           });
           this.name = "";
           this.email = "";
+          this.date = "";
           this.show = false;
       }
     },
