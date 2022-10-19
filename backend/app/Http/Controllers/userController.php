@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-/***add link */
 use App\Models\user_made;
+/***add link */
+use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+
 class userController extends Controller
 {
 
-    public function create(Request $request){
+    public function create(StorePostRequest $request){
         $user=user_made::create(
             [
                 "name"=>$request->input("name"),

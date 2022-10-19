@@ -3,7 +3,7 @@
         <div class="container">
             <h1>Update</h1>
             <div v-if="message!=''" class="alert alert-danger">
-                {{message}}
+                {{ message }}
             </div>
             <form @submit.prevent="edit">
               <label>Name :</label>
@@ -54,7 +54,6 @@ export default{
             })
             .catch((res)=>{
                   this.message=res.response.data.message;
-                //this.message=res.response.data.message;
             });
         }
     }
