@@ -15,7 +15,7 @@ class userController extends Controller
             [
                 "name"=>$request->input("name"),
                 "email"=>$request->input("email"),
-                "date_naissance"=>$request->input("date"),
+                "date_naissance"=>$request->input("date_naissance"),
             ]
         );
         return  response()->json(["data"=>$user],200);
