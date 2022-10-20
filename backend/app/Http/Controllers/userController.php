@@ -13,7 +13,6 @@ class userController extends Controller
     public function create(Request $request){
         $file_name = time().'_'.$request->file->getClientOriginalName();
         $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
-
         $user=user_made::create(
             [
                 "name"=>$request->input("name"),
@@ -51,7 +50,7 @@ class userController extends Controller
             }
         //}
         /*$search=$request->get('champ_search');
-        $user= user_made::where('name','%'.$search.'%')->get();
+        $user= user--_made::where('name','%'.$search.'%')->get();
         if(!$user){
             return  response()->json(["message"=>"user nor found"],401);
         }else{
@@ -70,7 +69,12 @@ class userController extends Controller
         return $humane;
     }*/
 
-    public function update(Request $request,int $id){
+
+    public function update(int $id,Request $request){
+        if($request->upload_image==1){
+            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
+           }
         $user=user_made::find($id);
         if(!$user){
             return response()->json(["message"=>"user not found"],404);
@@ -79,13 +83,24 @@ class userController extends Controller
                 return response()->json(["message"=>"Email already in use"], 400);
             }
             else{
+                 if($request->upload_image==1){
+                    $user->update(
+                        [
+                            "name"=>$request->input('name'),
+                            "email"=>$request->input('email'),
+                            "date_naissance"=>$request->input('date_naissance'),
+                            "avatar"=>'/storage/' . $file_path
+                        ],
+                    );
+                 }else{
                 $user->update(
                     [
                         "name"=>$request->input('name'),
                         "email"=>$request->input('email'),
-                        "date_naissance"=>$request->input('date'),
+                        "date_naissance"=>$request->input('date_naissance'),
                     ],
                 );
+                }
                 return response()->json(["data"=>$user],200);
             }
         }

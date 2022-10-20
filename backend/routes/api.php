@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => '/user_made'], function () {
     Route::get('/',[userController::class,'get_all']);
     Route::post('/',[userController::class,'create']);
-    Route::put('/{id}',[userController::class,'update']);
+    Route::post('/{id}',[userController::class,'update']);
     Route::delete('/{id}',[userController::class,'destroy']);
     Route::get('/findbyid/{id}',[userController::class,'find_by_id']);
     Route::get('/search/{champ_search}',[userController::class,'search']);
