@@ -1,34 +1,38 @@
 <template>
-    <div class="add_user">
-        <div class="container">
-          <h1>Add</h1>
-          <form @submit.prevent="Onsubmit">
-            <div v-if="show_error_field!=''" class="alert alert-danger">
-                      {{show_error_field}}
-               <!--<template  v-for="(error) in allerror">
+  <div class="add_user">
+    <div class="container">
+      <h1>Add</h1>
+      <form  @submit="Onsubmit" enctype="multipart/form-data">
+        <div v-if="show_error_field != ''" class="alert alert-danger">
+          {{ show_error_field }}
+          <!--<template  v-for="(error) in allerror">
                     <p v-for="(err) in error" :key="err">
                         {{err}}
                     </p>
                </template >-->
-            </div>
-            <label>Name :</label>
-            <input type="text" class="form-control" v-model="name" />
-              <div v-if="show_error" >
-                <small class="text-danger" v-if="name_error!=''"> {{name_error}}</small>  
-              </div>
-            <label>email :</label>
-            <input type="email" class="form-control" v-model="email" />
-            <div v-if="show_error" >
-              <small  class="text-danger"  v-if="email_error!=''"> {{email_error}}</small>  
-            </div>
-            <label>Date :</label>
-            <input type="date" class="form-control" v-model="date" />
-            <button  class="btn btn-outline-dark mt-2">
-              Add
-            </button>
-          </form>
         </div>
+        <label>Name :</label>
+        <input type="text" class="form-control" v-model="name" />
+        <div v-if="show_error">
+          <small class="text-danger" v-if="name_error != ''">
+            {{ name_error }}</small
+          >
+        </div>
+        <label>email :</label>
+        <input type="email" class="form-control" v-model="email" />
+        <div v-if="show_error">
+          <small class="text-danger" v-if="email_error != ''">
+            {{ email_error }}</small
+          >
+        </div>
+        <label>Date :</label>
+        <input type="date" class="form-control" v-model="date" />
+        <label>File :</label>
+        <input ref="file"  type="file" class="form-control" @change="upload_image" />
+        <button class="btn btn-outline-dark mt-2">Add</button>
+      </form>
     </div>
+  </div>
 </template>
 
 
@@ -39,42 +43,61 @@ export default {
   data() {
     return {
       show_error: false,
-      show_error_field:'',
+      show_error_field: "",
       name: "",
       email: "",
-      name_error:'',
-      email_error:'',
-      date:"",
+      name_error: "",
+      email_error: "",
+      date: "",
       user: [],
-      allerror:''
+      allerror: "",
+      file: "",
     };
   },
   methods: {
-    Onsubmit() {
-      if (this.name == "" || this.email == "" || this.date == "" ) {
-          this.show_error_field = 'All Field Required';
+    upload_image() {
+      this.file = this.$refs.file.files[0];
+    },
+    Onsubmit(e) {
+
+      if (this.name == "" || this.email == "" || this.date == "") {
+        this.show_error_field = "All Field Required";
       } else {
         this.user = {
           name: this.name,
           email: this.email,
-          date:this.date
+          date: this.date,
         };
-       
+        e.preventDefault();
+        const config = {
+            headers: {
+               'Content-Type': 'multipart/form-data',
+            }
+        }
+        let data = new FormData();
+        data.append("file",this.file);
+        data.append("date_naissance",this.date);
+        data.append("name",this.name);
+        data.append("email",this.email);
         axios
-          .post("http://localhost:8000/api/user_made", this.user)
+          .post("http://localhost:8000/api/user_made", data, config)
           .then(() => {
-           // console.log("here");
-           this.name = "";
-           this.email = "";
-           this.date = "";
-           this.show = false;
-           this.show_error_field='';
-            this.$router.push({name:"home"});
-          }).catch((res)=>{
-              this.show_error = true;
-              this.show_error_field='';
-              this.name_error=res.response.data.data.name[0] ? res.response.data.data.name[0] : '' ;
-              this.email_error=res.response.data.data.email[0] ? res.response.data.data.email[0] : '';
+            this.name = "";
+            this.email = "";
+            this.date = "";
+            this.show = false;
+            this.show_error_field = "";
+            this.$router.push({ name: "home" });
+          })
+          .catch((res) => {
+            this.show_error = true;
+            this.show_error_field = "";
+            this.name_error = res.response.data.data.name[0]
+              ? res.response.data.data.name[0]
+              : "";
+            this.email_error = res.response.data.data.email[0]
+              ? res.response.data.data.email[0]
+              : "";
           });
       }
     },

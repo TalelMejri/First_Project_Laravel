@@ -9,15 +9,20 @@ use App\Http\Requests\StorePostRequest;
 
 class userController extends Controller
 {
+    /** StorePostRequest to verified it in requests StorePostRequest*/
+    public function create(Request $request){
+        $file_name = time().'_'.$request->file->getClientOriginalName();
+        $file_path = $request->file('file')->storeAs('uploads', $file_name, 'public');
 
-    public function create(StorePostRequest $request){
         $user=user_made::create(
             [
                 "name"=>$request->input("name"),
                 "email"=>$request->input("email"),
-                "date_naissance"=>$request->input("date"),
+                "date_naissance"=>$request->input("date_naissance"),
+                "avatar"=>'/storage/' . $file_path
             ]
         );
+
         return  response()->json(["data"=>$user],200);
     }
 

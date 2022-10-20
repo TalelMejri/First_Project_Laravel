@@ -46,6 +46,7 @@
             <tfoot>
               <tr>
                 <th>*</th>
+                <th scope="col">Image</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date</th>
@@ -62,6 +63,9 @@
 
             <tbody v-else>
               <tr v-for="user in users" :key="user.id">
+                <td>
+                  <img :src="'http://localhost:8000'+user.avatar" height="50" width="50">
+                </td>
                 <td>
                   {{ user.id }}
                 </td>
