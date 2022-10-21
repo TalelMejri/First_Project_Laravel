@@ -26,8 +26,9 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:user_mades',
-            'email'=> 'required|unique:user_mades'
+            'name' => 'required|unique:user_mades|max:255',
+            'email'=> 'required|unique:user_mades',
+            'date_naissance'=>'required|date|before:tomorrow'
         ];
     }
 

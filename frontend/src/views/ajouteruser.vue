@@ -15,15 +15,15 @@
         <input type="text" class="form-control" v-model="name" />
         <div v-if="show_error">
           <small class="text-danger" v-if="name_error != ''">
-            {{ name_error }}</small
-          >
+            {{ name_error }}
+          </small>
         </div>
         <label>email :</label>
         <input type="email" class="form-control" v-model="email" />
         <div v-if="show_error">
           <small class="text-danger" v-if="email_error != ''">
-            {{ email_error }}</small
-          >
+            {{ email_error }}
+          </small>
         </div>
         <label>Date :</label>
         <input type="date" class="form-control" v-model="date" />

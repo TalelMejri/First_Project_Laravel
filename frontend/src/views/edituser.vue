@@ -71,6 +71,7 @@ export default{
         data.append("name",this.name);
         data.append("upload_image",this.upload_image);
         data.append("email",this.email);
+        /*** when use form data replace put with post */
             axios.post('http://localhost:8000/api/user_made/'+this.id,data,config)
             .then(()=>{
                 this.$router.push({name:"home"});
