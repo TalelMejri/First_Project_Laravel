@@ -36,7 +36,8 @@
           >
             <thead>
               <tr>
-                <th>*</th>
+                <th>Avatar</th>
+                <th>Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date</th>
@@ -45,8 +46,8 @@
             </thead>
             <tfoot>
               <tr>
-                <th>*</th>
-                <th scope="col">Image</th>
+                <th>Avatar</th>
+                <th>Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date</th>

@@ -48,27 +48,7 @@ class userController extends Controller
             }else{
                 return  response()->json(['data'=>$user], 200);
             }
-        //}
-        /*$search=$request->get('champ_search');
-        $user= user--_made::where('name','%'.$search.'%')->get();
-        if(!$user){
-            return  response()->json(["message"=>"user nor found"],401);
-        }else{
-            return response()->json(["data"=>$user],200);
-        }*/
-
     }
-
-    /*public function updateuser  (Request $request, int $id)
-    {
-        $humane = Humans::find($id);
-        $humane->first_name = $request->first_name;
-        $humane->last_name = $request->last_name;
-        $humane->dob = $request->dob;
-        $humane->save();
-        return $humane;
-    }*/
-
 
     public function update(int $id,Request $request){
         if($request->upload_image==1){
@@ -117,9 +97,9 @@ class userController extends Controller
 
     public function recover(Request $request){
         if(isset($request->search)){
-            $user=user_made::where("name",'like','%'.$request->search.'%')->paginate(5);
+            $user=user_made::where("name",'like','%'.$request->search.'%')->paginate(2);
         }else{
-            $user=user_made::paginate(5);
+            $user=user_made::paginate(2);
         }
         return response()->json($user, 200);
     }
