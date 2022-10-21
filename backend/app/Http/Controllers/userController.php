@@ -18,7 +18,10 @@ class userController extends Controller
                 "name"=>$request->input("name"),
                 "email"=>$request->input("email"),
                 "date_naissance"=>$request->input("date_naissance"),
+<<<<<<< HEAD
                 "avatar"=>'/storage/' . $file_path
+=======
+>>>>>>> e5eadb0e27ca3c0d008979e94aaa278b1e826b57
             ]
         );
 
