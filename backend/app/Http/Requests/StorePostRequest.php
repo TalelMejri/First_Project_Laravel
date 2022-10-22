@@ -2,7 +2,8 @@
 
  namespace App\Http\Requests;
 
- use Illuminate\Foundation\Http\FormRequest;
+use DateTime;
+use Illuminate\Foundation\Http\FormRequest;
  use Illuminate\Http\Exceptions\HttpResponseException;
  use Illuminate\Contracts\Validation\Validator;
 
@@ -25,10 +26,13 @@ class StorePostRequest extends FormRequest
      */
     public function rules()
     {
+        $hunderYearsAgo = date("Y-m-d",strtotime("-100 year"));
+        $eighteenYearsAgo = date("Y-m-d",strtotime("-18 year"));
+
         return [
             'name' => 'required|unique:user_mades|max:255',
-            'email'=> 'required|unique:user_mades',
-            'date_naissance'=>'required|date|before:tomorrow'
+            'email'=> 'required|unique:user_mades|email',
+            'date_naissance'=>'required|date|before:'.$eighteenYearsAgo.'|after:'.$hunderYearsAgo
         ];
     }
 
