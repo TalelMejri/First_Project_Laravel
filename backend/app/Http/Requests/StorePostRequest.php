@@ -32,7 +32,8 @@ class StorePostRequest extends FormRequest
         return [
             'name' => 'required|unique:user_mades|max:255',
             'email'=> 'required|unique:user_mades|email',
-            'date_naissance'=>'required|date|before:'.$eighteenYearsAgo.'|after:'.$hunderYearsAgo
+            'date_naissance'=>'required|date|before:'.$eighteenYearsAgo.'|after:'.$hunderYearsAgo,
+            'avatar'=> 'required',
         ];
     }
 
