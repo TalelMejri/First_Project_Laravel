@@ -54,11 +54,11 @@ export default{
             this.upload_image=1;
          },
         edit(e){
-            this.user={
+          /*  this.user={
                 name:this.name,
                 date:this.date,
                 email:this.email
-            }
+            }*/
         e.preventDefault();
         const config = {
             headers: {

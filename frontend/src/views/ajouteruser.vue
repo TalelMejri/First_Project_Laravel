@@ -3,7 +3,6 @@
     <div class="container">
       <h1>Add</h1>
       <form  @submit="Onsubmit" enctype="multipart/form-data">
-      
         <label>Name :</label>
         <input type="text" :class=" name_error!='' ? 'form-control is-invalid move_input' : 'form-control '" v-model="name"  />
         <div v-if="show_error">
@@ -64,11 +63,12 @@ export default {
     },
     Onsubmit(e) {
       {
-        this.user = {
+       /* this.user = {
           name: this.name,
           email: this.email,
           date: this.date,
-        };
+        };*/
+        /** add e pour file*/
         e.preventDefault();
         const config = {
             headers: {
@@ -96,7 +96,7 @@ export default {
               : "" ;
             this.email_error = res.response.data.data.email
               ? res.response.data.data.email[0]
-              : "";
+              : "" ;
             this.date_error=res.response.data.data.date_naissance
               ? res.response.data.data.date_naissance[0] : "" ; 
               this.file_error=res.response.data.data.avatar
