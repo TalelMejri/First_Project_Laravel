@@ -12,6 +12,7 @@ class user_made extends Model
         'name',
         'email',
         'date_naissance',
-        'avatar'
+        'avatar',
+        'photo_identity'
     ];
 }

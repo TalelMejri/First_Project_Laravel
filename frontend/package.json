@@ -9,9 +9,9 @@
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^2.0.8",
     "axios": "^1.1.2",
-    "bootstrap-vue": "^2.1.0",
+    "bootstrap-vue": "^2.22.0",
     "core-js": "^3.8.3",
-    "vue": "^2.6.14",
+    "vue": "^2.7.13",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },
@@ -21,7 +21,7 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.6.2",
     "mutationobserver-shim": "^0.3.3",
     "popper.js": "^1.16.0",
     "portal-vue": "^2.1.6",

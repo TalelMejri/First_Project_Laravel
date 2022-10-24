@@ -2,6 +2,7 @@
   <div id="app">
     <nav>
        <router-link to="/">✔🎉 Talel Mejri ✔🎉</router-link>
+       <router-link :to="{name:'users'}">✔🎉 Youssef el kese7 ✔🎉</router-link>
     </nav>
     <router-view/>
   </div>

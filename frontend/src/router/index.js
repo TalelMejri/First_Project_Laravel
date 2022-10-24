@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ajouteruser from '../views/ajouteruser.vue'
 import edituser from '../views/edituser.vue'
+import usersCards from '../views/usersCards.vue';
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +21,11 @@ const routes = [
     path: '/edituser/:id',
     name: 'edituser',
     component: edituser
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: usersCards,
   }
 ]
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->date('date_naissance')->nullable();
             $table->string('avatar');
+            $table->longText('photo_identity');
             $table->timestamps();
         });
     }

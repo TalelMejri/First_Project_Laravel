@@ -26,6 +26,7 @@ class StorePostRequest extends FormRequest
      */
     public function rules()
     {
+
         $hunderYearsAgo = date("Y-m-d",strtotime("-100 year"));
         $eighteenYearsAgo = date("Y-m-d",strtotime("-18 year"));
 
@@ -33,8 +34,9 @@ class StorePostRequest extends FormRequest
             'name' => 'required|unique:user_mades|max:255',
             'email'=> 'required|unique:user_mades|email',
             'date_naissance'=>'required|date|before:'.$eighteenYearsAgo.'|after:'.$hunderYearsAgo,
-            'avatar'=> 'required',
+           // 'avatar'=> 'required',
         ];
+
     }
 
     public function failedValidation(Validator $validator)

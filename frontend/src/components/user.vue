@@ -37,6 +37,7 @@
             <thead>
               <tr>
                 <th>Avatar</th>
+                <th>Photo identity</th>
                 <th>Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
@@ -47,6 +48,7 @@
             <tfoot>
               <tr>
                 <th>Avatar</th>
+                <th>Photo identity</th>
                 <th>Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
@@ -54,7 +56,12 @@
                 <th>operation</th>
               </tr>
             </tfoot>
-            <tbody v-if="users == ''">
+            <tbody v-if="loading" >
+              <td colspan="7" >
+                <b-spinner label="Spinning"></b-spinner>
+              </td>
+            </tbody>
+            <tbody v-else-if="users == ''">
               <tr class="table-primary">
                 <td class="text-center py-4" colspan="7">
                   <p class="fw-bolder text-danger">No matching records found</p>
@@ -64,6 +71,9 @@
 
             <tbody v-else>
               <tr v-for="user in users" :key="user.id">
+                <td>
+                  <img :src="user.photo_identity" height="50" width="50">
+                </td>
                 <td>
                   <img :src="'http://localhost:8000'+user.avatar" height="50" width="50">
                 </td>
@@ -146,6 +156,7 @@ export default {
         total: 0,
         per_page: 0,
       },
+      loading:true,
     };
   },
   created() {
@@ -165,14 +176,20 @@ export default {
         )
         .then((response) => {
           this.users = response.data.data;
-          console.log(response);
           this.pagination.prev_page =
             response.data.prev_page_url?.split("=")[1];
           this.pagination.next_page =
             response.data.next_page_url?.split("=")[1];
           this.pagination.per_page = response.data.per_page;
           this.pagination.total = response.data.total;
-        });
+          this.loading=false;
+        })
+        .catch((err)=>{
+          this.loading=false;
+        })
+        .finally(()=>{
+          this.loading=false;
+        })
     },
     // rechercher_email_nom() {
     //   axios

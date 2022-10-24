@@ -2,35 +2,79 @@
   <div class="add_user">
     <div class="container">
       <h1>Add</h1>
-      <form  @submit="Onsubmit" enctype="multipart/form-data">
+      <form @submit="Onsubmit" enctype="multipart/form-data">
         <label>Name :</label>
-        <input type="text" :class=" name_error!='' ? 'form-control is-invalid move_input' : 'form-control '" v-model="name"  />
+        <input
+          type="text"
+          :class="
+            name_error != ''
+              ? 'form-control is-invalid move_input'
+              : 'form-control '
+          "
+          v-model="name"
+        />
         <div v-if="show_error">
           <small class="text-danger" v-if="name_error != ''">
             {{ name_error }}
           </small>
         </div>
         <label>email :</label>
-        <input type="email" :class=" email_error!='' ? 'form-control is-invalid move_input' : 'form-control '" v-model="email" />
+        <input
+          type="email"
+          :class="
+            email_error != ''
+              ? 'form-control is-invalid move_input'
+              : 'form-control '
+          "
+          v-model="email"
+        />
         <div v-if="show_error">
           <small class="text-danger" v-if="email_error != ''">
             {{ email_error }}
           </small>
         </div>
         <label>Date :</label>
-        <input type="date" class="form-control" v-model="date" :class=" date_error!='' ? 'form-control is-invalid move_input' : 'form-control '" />
+        <input
+          type="date"
+          class="form-control"
+          v-model="date"
+          :class="
+            date_error != ''
+              ? 'form-control is-invalid move_input'
+              : 'form-control '
+          "
+        />
         <div v-if="show_error">
           <small class="text-danger" v-if="date_error != ''">
             {{ date_error }}
           </small>
         </div>
         <label>File :</label>
-        <input ref="file"  type="file" class="form-control" @change="upload_image" :class=" file_error!='' ? 'form-control is-invalid move_input' : 'form-control '"  />
-        <div v-if="show_error">
+        <input
+          ref="file"
+          type="file"
+          class="form-control"
+          @change="upload_image"
+          :class="
+            file_error != ''
+              ? 'form-control is-invalid move_input'
+              : 'form-control '
+          "
+        />
+
+        <label>File Identity :</label>
+        <input
+          ref="file_identity"
+          type="file"
+          id="identity"
+          class="form-control"
+          @change="createBase64Image"
+        />
+        <!--<div v-if="show_error">
           <small class="text-danger" v-if="file_error != ''">
             {{ file_error }}
           </small>
-        </div>
+        </div>-->
         <button class="btn btn-outline-dark mt-2">Add</button>
       </form>
     </div>
@@ -53,17 +97,37 @@ export default {
       user: [],
       allerror: "",
       file: "",
-      date_error:"",
-      file_error:""
+      date_error: "",
+      file_error: "",
+      file_identity: "",
     };
   },
   methods: {
+    handleImage(e) {
+      const selectedImage = e.target.files[0]; // get first file
+      this.createBase64Image(selectedImage);
+    },
+
+    createBase64Image(fileObject) {
+      const file = document.querySelector("#identity").files[0];
+      const reader = new FileReader();
+      let rawImg = this;
+      reader.onloadend = () => {
+        rawImg.file_identity = reader.result;
+        console.log(rawImg.file_identity);
+      };
+      reader.readAsDataURL(file);
+      
+    },
     upload_image() {
       this.file = this.$refs.file.files[0];
     },
+    /*upload_image_identity(){
+      this.file_identity = this.$refs.file_identity.files[0];
+    },*/
     Onsubmit(e) {
       {
-       /* this.user = {
+        /* this.user = {
           name: this.name,
           email: this.email,
           date: this.date,
@@ -71,15 +135,17 @@ export default {
         /** add e pour file*/
         e.preventDefault();
         const config = {
-            headers: {
-               'Content-Type': 'multipart/form-data',
-            }
-        }
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        const { image } = this;
         let data = new FormData();
-        data.append("file",this.file);
-        data.append("date_naissance",this.date);
-        data.append("name",this.name);
-        data.append("email",this.email);
+        data.append("file", this.file);
+        data.append("file_identity", this.file_identity);
+        data.append("date_naissance", this.date);
+        data.append("name", this.name);
+        data.append("email", this.email);
         axios
           .post("http://localhost:8000/api/user_made", data, config)
           .then(() => {
@@ -93,14 +159,16 @@ export default {
             this.show_error = true;
             this.name_error = res.response.data.data.name
               ? res.response.data.data.name[0]
-              : "" ;
+              : "";
             this.email_error = res.response.data.data.email
               ? res.response.data.data.email[0]
-              : "" ;
-            this.date_error=res.response.data.data.date_naissance
-              ? res.response.data.data.date_naissance[0] : "" ; 
-              this.file_error=res.response.data.data.avatar
-              ? res.response.data.data.avatar[0] : "" ; 
+              : "";
+            this.date_error = res.response.data.data.date_naissance
+              ? res.response.data.data.date_naissance[0]
+              : "";
+            this.file_error = res.response.data.data.avatar
+              ? res.response.data.data.avatar[0]
+              : "";
           });
       }
     },
@@ -109,17 +177,17 @@ export default {
 </script> 
 
 <style>
-.move_input{
-  animation: animate 0.5s ;
+.move_input {
+  animation: animate 0.5s;
 }
 @keyframes animate {
-  0%{
+  0% {
     transform: translateX(10px);
   }
-  50%{
+  50% {
     transform: translateX(-10px);
   }
-  100%{
+  100% {
     transform: translateX(0);
   }
 }
